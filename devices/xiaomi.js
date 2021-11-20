@@ -116,7 +116,7 @@ module.exports = [
         model: 'JWDL001A',
         vendor: 'Xiaomi',
         description: 'Aqara embedded spot led light',
-        extend: xiaomiExtend.light_onoff_brightness_colortemp(),
+        extend: xiaomiExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 370]}),
     },
     {
         zigbeeModel: ['lumi.sensor_switch'],
@@ -1127,7 +1127,7 @@ module.exports = [
         fromZigbee: [fz.xiaomi_battery, fz.DJT11LM_vibration],
         toZigbee: [tz.DJT11LM_vibration_sensitivity],
         exposes: [
-            e.battery(), e.action(['vibration', 'tilt', 'drop']),
+            e.battery(), e.vibration(), e.action(['vibration', 'tilt', 'drop']),
             exposes.numeric('strength', ea.STATE), exposes.enum('sensitivity', ea.STATE_SET, ['low', 'medium', 'high']),
             e.angle_axis('angle_x'), e.angle_axis('angle_y'), e.angle_axis('angle_z'), e.battery_voltage(),
         ],
@@ -1357,7 +1357,7 @@ module.exports = [
             await reporting.batteryVoltage(endpoint);
             await reporting.illuminance(endpoint, {min: 15, max: constants.repInterval.HOUR, change: 500});
         },
-        exposes: [e.battery(), e.illuminance(), e.illuminance_lux()],
+        exposes: [e.battery(), e.battery_voltage(), e.illuminance(), e.illuminance_lux()],
     },
     {
         zigbeeModel: ['lumi.light.rgbac1'],
@@ -1401,27 +1401,34 @@ module.exports = [
         model: 'DLKZMK11LM',
         vendor: 'Xiaomi',
         description: 'Aqara single switch module T1 (with neutral)',
-        fromZigbee: [fz.on_off, fz.metering, fz.electrical_measurement, fz.device_temperature, fz.xiaomi_switch_type,
-            fz.xiaomi_switch_power_outage_memory],
-        exposes: [e.switch(), e.energy(), e.power(), e.device_temperature(), e.power_outage_memory(), e.switch_type()],
+        fromZigbee: [fz.on_off, fz.xiaomi_power, fz.xiaomi_switch_type, fz.xiaomi_switch_opple_basic],
+        toZigbee: [tz.on_off, tz.xiaomi_power, tz.xiaomi_switch_type, tz.xiaomi_switch_power_outage_memory, tz.xiaomi_led_disabled_night],
+        exposes: [e.switch(), e.power().withAccess(ea.STATE_GET), e.energy(), e.temperature().withAccess(ea.STATE),
+            e.voltage().withAccess(ea.STATE), e.power_outage_memory(), e.led_disabled_night(), e.switch_type()],
+        configure: async (device, coordinatorEndpoint, logger) => {
+            await device.getEndpoint(1).write('aqaraOpple', {'mode': 1}, {manufacturerCode: 0x115f, disableResponse: true});
+        },
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['lumi.switch.l0agl1'],
+        model: 'SSM-U02',
+        vendor: 'Xiaomi',
+        description: 'Aqara single switch module T1 (without neutral). Doesn\'t work as a router and doesn\'t support power meter',
+        fromZigbee: [fz.on_off, fz.xiaomi_switch_type, fz.xiaomi_switch_power_outage_memory],
+        exposes: [e.switch(), e.power_outage_memory(), e.switch_type()],
         toZigbee: [tz.xiaomi_switch_type, tz.on_off, tz.xiaomi_switch_power_outage_memory],
         configure: async (device, coordinatorEndpoint, logger) => {
             const endpoint = device.getEndpoint(1);
-            await reporting.bind(endpoint, coordinatorEndpoint, ['genOnOff', 'haElectricalMeasurement', 'seMetering', 'genDeviceTempCfg']);
+            await reporting.bind(endpoint, coordinatorEndpoint, ['genOnOff']);
             await reporting.onOff(endpoint);
-            // Gives UNSUPPORTED_ATTRIBUTE on reporting.readEletricalMeasurementMultiplierDivisors.
-            await endpoint.read('haElectricalMeasurement', ['acPowerMultiplier', 'acPowerDivisor']);
-            await reporting.readMeteringMultiplierDivisor(endpoint);
-            await reporting.currentSummDelivered(endpoint);
-            await reporting.activePower(endpoint, {min: 5, max: 600, change: 10});
-            await reporting.deviceTemperature(endpoint);
             device.powerSource = 'Mains (single phase)';
             device.save();
         },
     },
     {
-        zigbeeModel: ['lumi.switch.l0agl1'],
-        model: 'SSM-U02',
+        zigbeeModel: ['lumi.switch.l0acn1'],
+        model: 'DLKZMK12LM',
         vendor: 'Xiaomi',
         description: 'Aqara single switch module T1 (without neutral). Doesn\'t work as a router and doesn\'t support power meter',
         fromZigbee: [fz.on_off, fz.xiaomi_switch_type, fz.xiaomi_switch_power_outage_memory],

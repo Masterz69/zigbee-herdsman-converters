@@ -351,6 +351,15 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['1742330P7'],
+        model: '1742330P7',
+        vendor: 'Philips',
+        description: 'Hue Calla outdoor',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['1744130P7'],
         model: '1744130P7',
         vendor: 'Philips',
@@ -432,7 +441,7 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
-        zigbeeModel: ['LWA003'],
+        zigbeeModel: ['LWA003', 'LWW002'],
         model: '9290022268',
         vendor: 'Philips',
         description: 'Hue White A19 bulb with Bluetooth',
@@ -556,10 +565,37 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['LTA004'],
+        model: '8719514328242',
+        vendor: 'Philips',
+        description: 'Hue white ambiance E27 800lm with Bluetooth',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['LTA009'],
         model: '9290024684',
         vendor: 'Philips',
         description: 'Hue white ambiance E27 1100lm with Bluetooth',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LTA010'],
+        model: '9290024683',
+        vendor: 'Philips',
+        description: 'Hue white ambiance A19 1100lm with Bluetooth',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LTA011'],
+        model: '929002471901',
+        vendor: 'Philips',
+        description: 'Hue white ambiance E27 1600lm with Bluetooth',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
         ota: ota.zigbeeOTA,
@@ -682,10 +718,28 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['LCA004'],
+        model: '9290024896',
+        vendor: 'Philips',
+        description: 'Hue white and color ambiance E27',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['LCA008'],
         model: '929002471601',
         vendor: 'Philips',
         description: 'Hue white and color ambiance E26/E27 1600lm',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LCA009'],
+        model: '9290024717',
+        vendor: 'Philips',
+        description: 'Hue white and color ambiance E26/A19 1600lm',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
         ota: ota.zigbeeOTA,
@@ -1014,6 +1068,15 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['4090231P9'],
+        model: '4090231P9',
+        vendor: 'Philips',
+        description: 'Hue Liane',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['LTC001'],
         model: '3261030P7',
         vendor: 'Philips',
@@ -1128,6 +1191,15 @@ module.exports = [
         description: 'Hue Cher ceiling light',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp(),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['4096730U9'],
+        model: '046677803087',
+        vendor: 'Philips',
+        description: 'Hue White ambiance Cher ceiling light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 500]}),
         ota: ota.zigbeeOTA,
     },
     {
@@ -1252,7 +1324,7 @@ module.exports = [
         vendor: 'Philips',
         description: 'Hue Iris (generation 2, black)',
         meta: {turnsOffAtBrightness1: true},
-        extend: hueExtend.light_onoff_brightness_color(),
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
         ota: ota.zigbeeOTA,
     },
     {
@@ -1346,12 +1418,39 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['4080248U9'],
+        model: '4080248U9',
+        vendor: 'Philips',
+        description: 'Hue White and color ambiance Signe floor light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LCT020'],
+        model: '4080148P7',
+        vendor: 'Philips',
+        description: 'Hue Signe table light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['4080148P9'],
         model: '4080148P9',
         vendor: 'Philips',
         description: 'Hue Signe table light',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp_color(),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['4080148U9'],
+        model: '4080148U9',
+        vendor: 'Philips',
+        description: 'Hue White and color ambiance Signe table light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
         ota: ota.zigbeeOTA,
     },
     {
@@ -1700,6 +1799,39 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['SML003'],
+        model: '9290030675',
+        vendor: 'Philips',
+        description: 'Hue motion sensor',
+        fromZigbee: [fz.battery, fz.occupancy, fz.temperature, fz.occupancy_timeout, fz.illuminance,
+            fz.hue_motion_sensitivity, fz.hue_motion_led_indication],
+        exposes: [e.temperature(), e.occupancy(), e.battery(), e.illuminance_lux(), e.illuminance(),
+            exposes.enum('motion_sensitivity', ea.ALL, ['low', 'medium', 'high']),
+            exposes.binary('led_indication', ea.ALL, true, false).withDescription('Blink green LED on motion detection'),
+            exposes.numeric('occupancy_timeout', ea.ALL).withUnit('second').withValueMin(0).withValueMax(65535)],
+        toZigbee: [tz.occupancy_timeout, tz.hue_motion_sensitivity, tz.hue_motion_led_indication],
+        endpoint: (device) => {
+            return {
+                'default': 2, // default
+                'ep1': 1,
+                'ep2': 2, // e.g. for write to msOccupancySensing
+            };
+        },
+        configure: async (device, coordinatorEndpoint, logger) => {
+            const endpoint = device.getEndpoint(2);
+            const binds = ['genPowerCfg', 'msIlluminanceMeasurement', 'msTemperatureMeasurement', 'msOccupancySensing'];
+            await reporting.bind(endpoint, coordinatorEndpoint, binds);
+            await reporting.batteryPercentageRemaining(endpoint);
+            await reporting.occupancy(endpoint);
+            await reporting.temperature(endpoint);
+            await reporting.illuminance(endpoint);
+            // read occupancy_timeout and motion_sensitivity
+            await endpoint.read('msOccupancySensing', ['pirOToUDelay']);
+            await endpoint.read('msOccupancySensing', [48], {manufacturerCode: 4107});
+        },
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['LOM001'],
         model: '929002240401',
         vendor: 'Philips',
@@ -1865,6 +1997,24 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['1741730V7'],
+        model: '1741730V7',
+        vendor: 'Philips',
+        description: 'Hue Lily outdoor spot light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['1746730V7'],
+        model: '1746730V7',
+        vendor: 'Philips',
+        description: 'Hue Lily outdoor spot light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['1746230V7', '1746230P7'],
         model: '1746230V7',
         vendor: 'Philips',
@@ -1908,6 +2058,15 @@ module.exports = [
         ota: ota.zigbeeOTA,
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [222, 454]}),
+    },
+    {
+        zigbeeModel: ['LTO004'],
+        model: '9290024785',
+        vendor: 'Philips',
+        description: 'Hue White Ambinance G25 E26 Edison Filament Globe',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [222, 454]}),
+        ota: ota.zigbeeOTA,
     },
     {
         zigbeeModel: ['LWV002'],
@@ -2005,7 +2164,7 @@ module.exports = [
         vendor: 'Philips',
         description: 'Hue Play gradient lightstrip 65',
         meta: {turnsOffAtBrightness1: true},
-        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 500]}),
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
         ota: ota.zigbeeOTA,
     },
     {
@@ -2131,7 +2290,7 @@ module.exports = [
         vendor: 'Philips',
         description: 'Hue Filament Globe XL Ambiance E27',
         meta: {turnsOffAtBrightness1: true},
-        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 500]}),
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [222, 454]}),
         ota: ota.zigbeeOTA,
     },
     {
@@ -2204,6 +2363,24 @@ module.exports = [
         description: 'Hue White ambiance Buckram single spotlight',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['1746547P7'],
+        model: '1746547P7',
+        vendor: 'Philips',
+        description: 'Hue White and color ambiance Daylo outdoor wall lamp',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LTA005'],
+        model: '8719514392830',
+        vendor: 'Philips',
+        description: 'Hue White Ambiance E27 filament screw globe',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [222, 454]}),
         ota: ota.zigbeeOTA,
     },
 ];
