@@ -39,6 +39,15 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['929003054301'],
+        model: '929003054301',
+        vendor: 'Philips',
+        description: 'Hue White Ambiance Cher Pendant',
+        meta: {turnsOffAtBrightness1: true},
+        extend: extend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['5063131P7'],
         model: '5063131P7',
         vendor: 'Philips',
@@ -243,10 +252,10 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
-        zigbeeModel: ['4090330P9_01', '4090330P9_02'],
+        zigbeeModel: ['4090330P9_01', '4090330P9_02', '929003052501_01', '929003052501_02'],
         model: '4090330P9',
         vendor: 'Philips',
-        description: 'Hue Ensis',
+        description: 'Hue Ensis (black)',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
         ota: ota.zigbeeOTA,
@@ -393,6 +402,15 @@ module.exports = [
         description: 'Hue Impress outdoor Pedestal',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp_color(),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['1740193P0'],
+        model: '1740193P0',
+        vendor: 'Philips',
+        description: 'Hue Lucca wall light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness(),
         ota: ota.zigbeeOTA,
     },
     {
@@ -727,6 +745,15 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['LCA006'],
+        model: '9290024689',
+        vendor: 'Philips',
+        description: 'Hue white and color ambiance B22 1100lm',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['LCA008'],
         model: '929002471601',
         vendor: 'Philips',
@@ -830,7 +857,7 @@ module.exports = [
         vendor: 'Philips',
         description: 'Hue white ambiance E14',
         meta: {turnsOffAtBrightness1: true},
-        extend: hueExtend.light_onoff_brightness_colortemp(),
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
         ota: ota.zigbeeOTA,
     },
     {
@@ -1185,7 +1212,7 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
-        zigbeeModel: ['4096730P6'],
+        zigbeeModel: ['4096730P6', '929003055601'],
         model: '4096730P6',
         vendor: 'Philips',
         description: 'Hue Cher ceiling light',
@@ -1240,6 +1267,15 @@ module.exports = [
     {
         zigbeeModel: ['3216331P6'],
         model: '3216331P6',
+        vendor: 'Philips',
+        description: 'Hue white ambiance Aurelle rectangle panel light',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['929003099101'],
+        model: '929003099101',
         vendor: 'Philips',
         description: 'Hue white ambiance Aurelle rectangle panel light',
         meta: {turnsOffAtBrightness1: true},
@@ -1860,7 +1896,7 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
-        zigbeeModel: ['LOM003'],
+        zigbeeModel: ['LOM003', 'LOM009'],
         model: '8718699689308',
         vendor: 'Philips',
         description: 'Hue smart plug - UK',
@@ -1906,6 +1942,20 @@ module.exports = [
         model: '929003050601',
         vendor: 'Philips',
         description: 'Hue smart plug',
+        extend: extend.switch(),
+        toZigbee: [tz.on_off].concat([tz.hue_power_on_behavior, tz.hue_power_on_error]),
+        configure: async (device, coordinatorEndpoint, logger) => {
+            const endpoint = device.getEndpoint(11);
+            await reporting.bind(endpoint, coordinatorEndpoint, ['genOnOff']);
+            await reporting.onOff(endpoint);
+        },
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LOM008'],
+        model: '9290030509',
+        vendor: 'Philips',
+        description: 'Hue smart plug - EU',
         extend: extend.switch(),
         toZigbee: [tz.on_off].concat([tz.hue_power_on_behavior, tz.hue_power_on_error]),
         configure: async (device, coordinatorEndpoint, logger) => {
@@ -2195,6 +2245,15 @@ module.exports = [
         ota: ota.zigbeeOTA,
     },
     {
+        zigbeeModel: ['5047230P6', '5047230P6'],
+        model: '5047230P6',
+        vendor: 'Philips',
+        description: 'Hue White ambiance Buckram double spotlight',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [153, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
         zigbeeModel: ['5047430P6'],
         model: '5047430P6',
         vendor: 'Philips',
@@ -2381,6 +2440,32 @@ module.exports = [
         description: 'Hue White Ambiance E27 filament screw globe',
         meta: {turnsOffAtBrightness1: true},
         extend: hueExtend.light_onoff_brightness_colortemp({colorTempRange: [222, 454]}),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LWE007'],
+        model: '9290030211',
+        vendor: 'Philips',
+        description: 'Hue white Candle bulb E14 bluetooth',
+        meta: {turnsOffAtBrightness1: true},
+        extend: hueExtend.light_onoff_brightness(),
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LCD003'],
+        model: '8719514344723',
+        vendor: 'Philips',
+        description: 'Akari downlight',
+        extend: hueExtend.light_onoff_brightness_colortemp_color({colorTempRange: [153, 500]}),
+        meta: {turnsOffAtBrightness1: true},
+        ota: ota.zigbeeOTA,
+    },
+    {
+        zigbeeModel: ['LWE004'],
+        model: '8719514302235',
+        vendor: 'Philips',
+        description: 'Hue White Filament Bulb E14',
+        extend: hueExtend.light_onoff_brightness(),
         ota: ota.zigbeeOTA,
     },
 ];

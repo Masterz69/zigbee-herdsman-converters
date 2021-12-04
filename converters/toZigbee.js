@@ -913,8 +913,8 @@ const converters = {
             const payload = {colortemp: value, transtime: utils.getTransition(entity, key, meta).time};
             await entity.command('lightingColorCtrl', 'moveToColorTemp', payload, utils.getOptions(meta.mapped, entity));
             return {
-                state: libColor.syncColorState({'color_mode': constants.colorMode[2], 'color_temp': value}, meta.state, meta.options),
-                readAfterWriteTime: payload.transtime * 100,
+                state: libColor.syncColorState({'color_mode': constants.colorMode[2], 'color_temp': value}, meta.state,
+                    entity, meta.options, meta.logger), readAfterWriteTime: payload.transtime * 100,
             };
         },
         convertGet: async (entity, key, meta) => {
@@ -1030,7 +1030,8 @@ const converters = {
             }
 
             await entity.command('lightingColorCtrl', command, zclData, utils.getOptions(meta.mapped, entity));
-            return {state: libColor.syncColorState(newState, meta.state, meta.options), readAfterWriteTime: zclData.transtime * 100};
+            return {state: libColor.syncColorState(newState, meta.state, entity, meta.options, meta.logger),
+                readAfterWriteTime: zclData.transtime * 100};
         },
         convertGet: async (entity, key, meta) => {
             await entity.read('lightingColorCtrl', light.readColorAttributes(entity, meta));
@@ -1362,6 +1363,20 @@ const converters = {
         },
         convertGet: async (entity, key, meta) => {
             await entity.read('hvacThermostat', ['maxHeatSetpointLimit']);
+        },
+    },
+    thermostat_ac_louver_position: {
+        key: ['ac_louver_position'],
+        convertSet: async (entity, key, value, meta) => {
+            let acLouverPosition = utils.getKey(constants.thermostatAcLouverPositions, value, undefined, Number);
+            if (acLouverPosition === undefined) {
+                acLouverPosition = utils.getKey(constants.thermostatAcLouverPositions, value, value, Number);
+            }
+            await entity.write('hvacThermostat', {acLouverPosition});
+            return {state: {ac_louver_position: value}};
+        },
+        convertGet: async (entity, key, meta) => {
+            await entity.read('hvacThermostat', ['acLouverPosition']);
         },
     },
     electrical_measurement_power: {
@@ -2796,11 +2811,10 @@ const converters = {
     },
     tvtwo_thermostat: {
         key: [
-            'window_detection', 'frost_protection', 'child_lock',
-            'current_heating_setpoint', 'local_temperature_calibration',
-            'holiday_temperature', 'comfort_temperature', 'eco_temperature',
-            'open_window_temperature', 'heating_stop', 'preset', 'boost_timeset_countdown',
-            'holiday_mode_date', 'working_day', 'week_schedule', 'week', 'online',
+            'child_lock', 'open_window', 'open_window_temperature', 'frost_protection', 'heating_stop',
+            'current_heating_setpoint', 'local_temperature_calibration', 'preset', 'boost_timeset_countdown',
+            'holiday_mode_date', 'holiday_temperature', 'comfort_temperature', 'eco_temperature',
+            'working_day', 'week_schedule', 'week', 'online',
         ],
         convertSet: async (entity, key, value, meta) => {
             switch (key) {
@@ -2808,13 +2822,23 @@ const converters = {
                 const presetLookup = {'auto': 0, 'manual': 1, 'holiday': 3};
                 await tuya.sendDataPointEnum(entity, tuya.dataPoints.tvMode, presetLookup[value]);
                 return {state: {preset: value}};}
-            case 'frost_protection':
-                await tuya.sendDataPointBool(entity, tuya.dataPoints.tvFrostDetection, value === 'ON');
-                break;
             case 'heating_stop':
-                await tuya.sendDataPointBool(entity, tuya.dataPoints.tvHeatingStop, value === 'ON');
+                if (value == 'ON') {
+                    await tuya.sendDataPointBool(entity, tuya.dataPoints.tvHeatingStop, 1);
+                } else {
+                    await tuya.sendDataPointBool(entity, tuya.dataPoints.tvHeatingStop, 0);
+                    await tuya.sendDataPointEnum(entity, tuya.dataPoints.tvMode, 1 /* manual */);
+                }
                 break;
-            case 'window_detection':
+            case 'frost_protection':
+                if (value == 'ON') {
+                    await tuya.sendDataPointBool(entity, tuya.dataPoints.tvFrostDetection, 1);
+                } else {
+                    await tuya.sendDataPointBool(entity, tuya.dataPoints.tvFrostDetection, 0);
+                    await tuya.sendDataPointEnum(entity, tuya.dataPoints.tvMode, 1 /* manual */);
+                }
+                break;
+            case 'open_window':
                 await tuya.sendDataPointBool(entity, tuya.dataPoints.tvWindowDetection, value === 'ON');
                 break;
             case 'child_lock':
@@ -2827,6 +2851,7 @@ const converters = {
                 break;
             case 'current_heating_setpoint':
                 await tuya.sendDataPointValue(entity, tuya.dataPoints.tvHeatingSetpoint, value * 10);
+                await tuya.sendDataPointEnum(entity, tuya.dataPoints.tvMode, 1 /* manual */);
                 break;
             case 'holiday_temperature':
                 await tuya.sendDataPointValue(entity, tuya.dataPoints.tvHolidayTemp, value * 10);
@@ -2845,7 +2870,7 @@ const converters = {
                 await tuya.sendDataPointValue(entity, tuya.dataPoints.tvOpenWindowTemp, value * 10);
                 break;
             case 'holiday_mode_date':
-                await tuya.sendDataPointBitmap(entity, tuya.dataPoints.tvWorkingDayTimetvHolidayMode, value);
+                await tuya.sendDataPointBitmap(entity, tuya.dataPoints.tvHolidayMode, value);
                 break;
 
             case 'online':
@@ -2999,7 +3024,8 @@ const converters = {
                     color_temp: meta.message.color_temp,
                 };
 
-                return {state: libColor.syncColorState(newState, meta.state, meta.options), readAfterWriteTime: zclData.transtime * 100};
+                return {state: libColor.syncColorState(newState, meta.state, entity, meta.options, meta.logger),
+                    readAfterWriteTime: zclData.transtime * 100};
             }
 
             if (key === 'color_temp') {
@@ -3016,7 +3042,8 @@ const converters = {
                     color_temp: value,
                 };
 
-                return {state: libColor.syncColorState(newState, meta.state, meta.options), readAfterWriteTime: zclData.transtime * 100};
+                return {state: libColor.syncColorState(newState, meta.state, entity, meta.options, meta.logger),
+                    readAfterWriteTime: zclData.transtime * 100};
             }
 
             const zclData = {
@@ -3080,7 +3107,8 @@ const converters = {
                 color_mode: constants.colorMode[0],
             };
 
-            return {state: libColor.syncColorState(newState, meta.state, meta.options), readAfterWriteTime: zclData.transtime * 100};
+            return {state: libColor.syncColorState(newState, meta.state, entity, meta.options, meta.logger),
+                readAfterWriteTime: zclData.transtime * 100};
         },
         convertGet: async (entity, key, meta) => {
             await entity.read('lightingColorCtrl', [
@@ -5039,7 +5067,7 @@ const converters = {
                             recalledState = addColorMode(recalledState);
                         }
 
-                        Object.assign(recalledState, libColor.syncColorState(recalledState, meta.state, meta.options));
+                        Object.assign(recalledState, libColor.syncColorState(recalledState, meta.state, entity, meta.options, meta.logger));
                         membersState[member.getDevice().ieeeAddr] = recalledState;
                     } else {
                         meta.logger.warn(`Unknown scene was recalled for ${member.getDevice().ieeeAddr}, can't restore state.`);
@@ -5056,7 +5084,7 @@ const converters = {
                         recalledState = addColorMode(recalledState);
                     }
 
-                    Object.assign(recalledState, libColor.syncColorState(recalledState, meta.state, meta.options));
+                    Object.assign(recalledState, libColor.syncColorState(recalledState, meta.state, entity, meta.options, meta.logger));
                     meta.logger.info('Successfully recalled scene');
                     return {state: recalledState};
                 } else {
